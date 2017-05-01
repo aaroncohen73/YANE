@@ -1,7 +1,26 @@
+#include <cstdio>
 #include <iostream>
+#include "nes2.h"
+
+using std::cout;
+using std::endl;
+
+void dump_nes2(NES2& nes2)
+{
+    cout << "PRG ROM pages: " << +nes2.prg_pages << endl;
+    cout << "CHR ROM pages: " << +nes2.chr_pages << endl;
+    cout << "Mapper number: " << +nes2.mapper() << endl;
+    cout << "Four-screen mode? " << nes2.flag_four_screen() << endl;
+    cout << "Trainer ROM? " << nes2.flag_trainer() << endl;
+    cout << "Battery-backed SRAM? " << nes2.flag_sram() << endl;
+    cout << "Vertical VRAM mirroring? " << nes2.flag_vert_mirroring() << endl;
+}
 
 int main()
 {
-    std::cout << "Hello, world!" << std::endl;
+    NES2 nes2;
+    nes2.parse("mario.nes");
+    dump_nes2(nes2);
+
     return 0;
 }
