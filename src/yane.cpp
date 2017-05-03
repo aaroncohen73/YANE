@@ -1,6 +1,7 @@
-#include <cstdio>
 #include <iostream>
+#include <memory>
 #include "nes2.h"
+#include "mappers/mapper_0.h"
 
 using std::cout;
 using std::endl;
@@ -21,6 +22,8 @@ int main()
     NES2 nes2;
     nes2.parse("mario.nes");
     dump_nes2(nes2);
+
+    std::unique_ptr<Mapper> map = std::make_unique<Mapper_0>(nes2);
 
     return 0;
 }

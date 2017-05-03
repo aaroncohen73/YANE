@@ -13,8 +13,7 @@
 
 
 NES2::NES2() :
-    prg_pages(0), chr_pages(0), flags_six(0), flags_seven(0),
-    trainer(std::make_shared<std::vector<uint8_t>>())
+    prg_pages(0), chr_pages(0), flags_six(0), flags_seven(0)
 {}
 
 
@@ -60,24 +59,15 @@ bool NES2::flag_vs_uni() const
 }
 
 
-auto NES2::trainer_rom() const
+const std::vector<uint8_t>& NES2::prg_page(uint8_t page) const
 {
-    auto t = trainer;
-    return t;
+    return prg.at(page);
 }
 
 
-auto NES2::prg_rom(uint8_t page) const
+const std::vector<uint8_t>& NES2::chr_page(uint8_t page) const
 {
-    auto p = prg.at(page);
-    return p;
-}
-
-
-auto NES2::chr_rom(uint8_t page) const
-{
-    auto c = chr.at(page);
-    return c;
+    return chr.at(page);
 }
 
 
@@ -107,26 +97,25 @@ void NES2::parse(const std::string filename)
 
     std::istream_iterator<uint8_t> nes2_it(nes2);
 
-    trainer = std::make_shared<std::vector<uint8_t>>();
     if (flag_trainer())
     {
-        trainer->resize(TRAINER_SIZE);
-        std::copy_n(nes2_it, TRAINER_SIZE, trainer->begin());
+        trainer_rom.resize(TRAINER_SIZE);
+        std::copy_n(nes2_it, TRAINER_SIZE, trainer_rom.begin());
     }
 
     for(int i = 0; i < prg_pages; i++)
     {
-        auto prg_page = std::make_shared<std::vector<uint8_t>>();
-        prg_page->resize(PRG_SIZE);
-        std::copy_n(nes2_it, PRG_SIZE, prg_page->begin());
-        prg.push_back(prg_page);
+        std::vector<uint8_t> page;
+        page.resize(PRG_SIZE);
+        std::copy_n(nes2_it, PRG_SIZE, page.begin());
+        prg.push_back(page);
     }
 
     for(int i = 0; i < chr_pages; i++)
     {
-        auto chr_page = std::make_shared<std::vector<uint8_t>>();
-        chr_page->resize(CHR_SIZE);
-        std::copy_n(nes2_it, CHR_SIZE, chr_page->begin());
-        chr.push_back(chr_page);
+        std::vector<uint8_t> page;
+        page.resize(CHR_SIZE);
+        std::copy_n(nes2_it, CHR_SIZE, page.begin());
+        chr.push_back(page);
     }
 }

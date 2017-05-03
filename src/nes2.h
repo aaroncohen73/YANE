@@ -18,6 +18,8 @@ public:
     uint8_t prg_pages;  // Number of PRG (16384 byte) ROM pages
     uint8_t chr_pages;  // Number of CHR (8192 byte) ROM pages
 
+    std::vector<uint8_t> trainer_rom;  // Trainer ROM
+
     NES2();
 
     /* The ROM's mapper number */
@@ -41,14 +43,11 @@ public:
     /* Vs. Unisystem game */
     bool flag_vs_uni() const;
 
-    /* Trainer ROM */
-    auto trainer_rom() const;
-
     /* PRG ROM page */
-    auto prg_rom(uint8_t page) const;
+    const std::vector<uint8_t>& prg_page(uint8_t page) const;
 
     /* CHR ROM page */
-    auto chr_rom(uint8_t page) const;
+    const std::vector<uint8_t>& chr_page(uint8_t page) const;
 
     /* Parse file */
     void parse(const std::string filename);
@@ -57,9 +56,9 @@ private:
     uint8_t flags_six;  // Byte 6 flags field
     uint8_t flags_seven;  // Byte 7 flags field
 
-    std::shared_ptr<std::vector<uint8_t>> trainer;  // Trainer ROM
-    std::vector<std::shared_ptr<std::vector<uint8_t>>> prg;  // PRG ROM
-    std::vector<std::shared_ptr<std::vector<uint8_t>>> chr;  // CHR ROM
+    std::vector<std::vector<uint8_t>> prg;  // PRG ROM
+    std::vector<std::vector<uint8_t>> chr;  // CHR ROM
+    /* No support for PRG RAM right now */
     /* No support for PC-10 games right now */
 };
 
