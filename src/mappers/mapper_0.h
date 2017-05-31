@@ -14,6 +14,9 @@ public:
 private:
     void cart_write_byte(uint16_t addr, uint8_t byte) override;
     uint8_t cart_read_byte(uint16_t addr) override;
+
+    void cart_ppu_write_byte(uint16_t addr, uint8_t byte) override;
+    uint8_t cart_ppu_read_byte(uint16_t addr) override;
 };
 
 #endif

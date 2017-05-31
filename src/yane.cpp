@@ -17,13 +17,18 @@ void dump_nes2(NES2& nes2)
     cout << "Vertical VRAM mirroring? " << nes2.flag_vert_mirroring() << endl;
 }
 
-int main()
+int main(int argc, char **argv)
 {
     NES2 nes2;
-    nes2.parse("mario.nes");
-    dump_nes2(nes2);
+    std::unique_ptr<Mapper> map;
 
-    std::unique_ptr<Mapper> map = std::make_unique<Mapper_0>(nes2);
+    if (argc == 2)
+    {
+        nes2.parse(argv[1]);
+        map = std::make_unique<Mapper_0>(nes2);
+
+        dump_nes2(nes2);
+    }
 
     return 0;
 }

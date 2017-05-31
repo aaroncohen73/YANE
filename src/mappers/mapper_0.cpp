@@ -23,12 +23,26 @@ uint8_t Mapper_0::cart_read_byte(uint16_t addr)
     /* If cart is NROM-128, mirror the first 16 KB */
     if ((addr >= 0x8000 && addr <= 0xBFFF) || cart.prg_pages == 1)
     {
-        auto page = cart.prg_page(0);
+        auto page = cart.prg_page_at(0);
         return page.at(addr & 0x3FFF);
     }
     else if (addr >= 0xC000)
     {
-        auto page = cart.prg_page(1);
+        auto page = cart.prg_page_at(1);
         return page.at(addr & 0x3FFF);
     }
+}
+
+
+void Mapper_0::cart_ppu_write_byte(uint16_t addr, uint8_t byte)
+{
+    /* No support for CHR RAM yet (not official but supported by most
+     * emulators) */
+}
+
+
+uint8_t Mapper_0::cart_ppu_read_byte(uint16_t addr)
+{
+    auto page = cart.chr_page_at(0);
+    return page.at(addr & 0x1FFF);
 }

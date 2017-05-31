@@ -1,6 +1,7 @@
 /* nes2.cpp - NES 2.0 File Parser */
 
 #include <algorithm>
+#include <array>
 #include <cstring>
 #include <fstream>
 #include <iostream>
@@ -59,13 +60,13 @@ bool NES2::flag_vs_uni() const
 }
 
 
-const std::vector<uint8_t>& NES2::prg_page(uint8_t page) const
+const NES2::prg_page& NES2::prg_page_at(uint8_t page) const
 {
     return prg.at(page);
 }
 
 
-const std::vector<uint8_t>& NES2::chr_page(uint8_t page) const
+const NES2::chr_page& NES2::chr_page_at(uint8_t page) const
 {
     return chr.at(page);
 }
@@ -99,22 +100,19 @@ void NES2::parse(const std::string filename)
 
     if (flag_trainer())
     {
-        trainer_rom.resize(TRAINER_SIZE);
         std::copy_n(nes2_it, TRAINER_SIZE, trainer_rom.begin());
     }
 
     for(int i = 0; i < prg_pages; i++)
     {
-        std::vector<uint8_t> page;
-        page.resize(PRG_SIZE);
+        prg_page page;
         std::copy_n(nes2_it, PRG_SIZE, page.begin());
         prg.push_back(page);
     }
 
     for(int i = 0; i < chr_pages; i++)
     {
-        std::vector<uint8_t> page;
-        page.resize(CHR_SIZE);
+        chr_page page;
         std::copy_n(nes2_it, CHR_SIZE, page.begin());
         chr.push_back(page);
     }
