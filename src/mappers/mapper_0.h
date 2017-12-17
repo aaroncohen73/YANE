@@ -9,7 +9,7 @@
 class Mapper_0 : public Mapper
 {
 public:
-    explicit Mapper_0(const NES2& nes2);
+    explicit Mapper_0(std::weak_ptr<NES2> nes2);
 
 private:
     void cart_write_byte(uint16_t addr, uint8_t byte) override;

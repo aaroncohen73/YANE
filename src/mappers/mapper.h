@@ -3,6 +3,7 @@
 #ifndef MAPPER_H
 #define MAPPER_H
 
+#include <memory>
 #include <vector>
 #include "../nes2.h"
 
@@ -15,7 +16,7 @@
 class Mapper
 {
 public:
-    explicit Mapper(const NES2& nes2);
+    explicit Mapper(std::weak_ptr<NES2> nes2);
 
     void write_byte(uint16_t addr, uint8_t byte);
     uint8_t read_byte(uint16_t addr);
@@ -24,7 +25,7 @@ public:
     virtual uint8_t ppu_read_byte(uint16_t addr);
 
 protected:
-    const NES2& cart;
+    std::weak_ptr<NES2> cart;
 
 private:
     std::array<uint8_t, INTERNAL_RAM_SIZE> internal_ram;

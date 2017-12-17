@@ -7,7 +7,7 @@
 #include "mapper.h"
 
 
-Mapper::Mapper(const NES2& nes2) :
+Mapper::Mapper(std::weak_ptr<NES2> nes2) :
     cart(nes2)
 {
 }
@@ -80,7 +80,7 @@ void Mapper::ppu_write_byte(uint16_t addr, uint8_t byte)
     else if (addr >= 0x2000 && addr <= 0x3EFF)
     {
         uint8_t nametable_offset;
-        if (cart.flag_vert_mirroring())
+        if (cart->flag_vert_mirroring())
         {
             /* Nametable 2 and 4 map to VRAM 0x400-0x7FF */
             nametable_offset = (addr & 0x400) ? 0x400 : 0;
@@ -113,7 +113,7 @@ uint8_t Mapper::ppu_read_byte(uint16_t addr)
     else if (addr >= 0x2000 && addr <= 0x3EFF)
     {
         uint8_t nametable_offset;
-        if (cart.flag_vert_mirroring())
+        if (cart->flag_vert_mirroring())
         {
             /* Nametable 2 and 4 map to VRAM 0x400-0x7FF */
             nametable_offset = (addr & 0x400) ? 0x400 : 0;
